@@ -29,15 +29,15 @@ public class TabsModel: NSObject, NSCoding {
         static let tabs = "tabs2"
     }
 
-    private(set) var currentIndex: Int
-    private(set) var tabs: [Tab]
+    private var currentIndex: Int?
+    private var tabs: [Tab]
 
     var hasUnread: Bool {
         return tabs.contains(where: { !$0.viewed })
     }
         
-    public init(tabs: [Tab] = [], currentIndex: Int = 0, desktop: Bool) {
-        self.tabs = tabs.isEmpty ? [Tab(desktop: desktop)] : tabs
+    public init(tabs: [Tab] = [], currentIndex: Int? = nil, desktop: Bool) {
+        self.tabs = tabs
         self.currentIndex = currentIndex
     }
 
@@ -74,8 +74,8 @@ public class TabsModel: NSObject, NSCoding {
     }
 
     var currentTab: Tab? {
-        let index = currentIndex
-        return tabs[index]
+        guard let currentIndex = currentIndex else { return nil }
+        return tabs[currentIndex]
     }
 
     var count: Int {
@@ -121,20 +121,17 @@ public class TabsModel: NSObject, NSCoding {
     func remove(at index: Int) {
 
         tabs.remove(at: index)
-
-        let current = currentIndex
-
         if tabs.isEmpty {
-            tabs.append(Tab())
-            currentIndex = 0
+            currentIndex = nil
             return
         }
 
-        if current == 0 || current < index {
-            return
+        if let current = currentIndex {
+            if current == 0 || current < index {
+                return
+            }
+            currentIndex = current - 1
         }
-
-        currentIndex = current - 1
     }
 
     func remove(tab: Tab) {
@@ -151,5 +148,24 @@ public class TabsModel: NSObject, NSCoding {
         tabs.removeAll()
         tabs.append(Tab())
         currentIndex = 0
+    }
+
+    func insert(tab: Tab, after afterTab: Tab) {
+        guard let index = indexOf(tab: afterTab) else {
+            fatalError("No index for tab")
+        }
+        insert(tab: tab, at: index)
+    }
+
+    func select(tab: Tab) {
+        currentIndex = indexOf(tab: tab)
+    }
+
+    func firstTab(where filter: (Tab) -> Bool) -> Tab? {
+        return tabs.first(where: filter)
+    }
+
+    func forEach(_ body: (Tab) -> Void) {
+        tabs.forEach(body)
     }
 }

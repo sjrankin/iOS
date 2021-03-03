@@ -34,9 +34,7 @@ class TabManager {
         self.model = model
         self.previewsSource = previewsSource
         self.delegate = delegate
-        let index = model.currentIndex
-        let tab = model.tabs[index]
-        if tab.link != nil {
+        if let tab = model.currentTab, tab.link != nil {
             let controller = buildController(forTab: tab)
             tabControllerCache.append(controller)
         }
@@ -59,18 +57,18 @@ class TabManager {
     }
 
     var current: TabViewController? {
-
-        let index = model.currentIndex
-        let tab = model.tabs[index]
-
-        if let controller = controller(for: tab) {
-            return controller
-        } else {
-            os_log("Tab not in cache, creating", log: generalLog, type: .debug)
-            let controller = buildController(forTab: tab)
-            tabControllerCache.append(controller)
-            return controller
+        if let tab = model.currentTab {
+            if let controller = controller(for: tab) {
+                return controller
+            } else {
+                os_log("Tab not in cache, creating", log: generalLog, type: .debug)
+                let controller = buildController(forTab: tab)
+                tabControllerCache.append(controller)
+                return controller
+            }
         }
+
+        return nil
     }
     
     private func controller(for tab: Tab) -> TabViewController? {
@@ -105,8 +103,12 @@ class TabManager {
         }
 
         let tab = Tab(link: request.url == nil ? nil : Link(title: nil, url: request.url!))
-        model.insert(tab: tab, at: model.currentIndex + 1)
-        model.select(tabAt: model.currentIndex + 1)
+        if let currentTab = model.currentTab {
+            model.insert(tab: tab, after: currentTab)
+        } else {
+            model.add(tab: tab)
+        }
+        model.select(tab: tab)
 
         let controller = TabViewController.loadFromStoryboard(model: tab)
         controller.attachWebView(configuration: configCopy, andLoadRequest: request, consumeCookies: !model.hasActiveTabs)
@@ -125,11 +127,11 @@ class TabManager {
     }
 
     func firstHomeTab() -> Tab? {
-        return model.tabs.first(where: { $0.link == nil })
+        return model.firstTab(where: { $0.link == nil })
     }
 
     func first(withUrl url: URL) -> Tab? {
-        return model.tabs.first(where: {
+        return model.firstTab(where: {
             guard let linkUrl = $0.link?.url else { return false }
 
             if linkUrl == url {
@@ -176,11 +178,14 @@ class TabManager {
         let controller = buildController(forTab: tab, url: url)
         tabControllerCache.append(controller)
 
-        let index = model.currentIndex
-        model.insert(tab: tab, at: index + 1)
+        if let currentTab = model.currentTab {
+            model.insert(tab: tab, after: currentTab)
+        } else {
+            model.add(tab: tab)
+        }
 
         if !inBackground {
-            model.select(tabAt: index + 1)
+            model.select(tab: tab)
         }
 
         save()

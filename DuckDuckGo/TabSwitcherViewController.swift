@@ -36,9 +36,8 @@ class TabSwitcherViewController: UIViewController {
     
     @IBOutlet weak var titleView: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var toolbar: UIToolbar!
     
-    @IBOutlet weak var displayModeButton: UIButton!
+    // @IBOutlet weak var displayModeButton: UIButton!
     @IBOutlet weak var bookmarkAllButton: UIButton!
     
     @IBOutlet weak var fireButton: UIBarButtonItem!
@@ -49,7 +48,12 @@ class TabSwitcherViewController: UIViewController {
     @IBOutlet weak var topPlusButton: UIButton!
     @IBOutlet weak var topDoneButton: UIButton!
 
-    @IBOutlet var displayModeTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var logoImage: UIImageView!
+    @IBOutlet weak var searchBackground: UIView!
+    @IBOutlet weak var omniBarContainer: UIView!
+    weak var omniBar: OmniBar?
+
+    // @IBOutlet var displayModeTrailingConstraint: NSLayoutConstraint!
 
     weak var delegate: TabSwitcherDelegate!
     weak var tabsModel: TabsModel!
@@ -66,9 +70,12 @@ class TabSwitcherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setupSearch()
+
         refreshTitle()
         setupBackgroundView()
-        currentSelection = tabsModel.currentIndex
+        currentSelection = tabsModel.currentTab != nil ? tabsModel.indexOf(tab: tabsModel.currentTab!) : nil
         applyTheme(ThemeManager.shared.currentTheme)
         becomeFirstResponder()
         
@@ -78,31 +85,36 @@ class TabSwitcherViewController: UIViewController {
         }
         
         if #available(iOS 13.4, *) {
-            displayModeButton.isPointerInteractionEnabled = true
+            // displayModeButton.isPointerInteractionEnabled = true
             bookmarkAllButton.isPointerInteractionEnabled = true
             topFireButton.isPointerInteractionEnabled = true
             topPlusButton.isPointerInteractionEnabled = true
             topDoneButton.isPointerInteractionEnabled = true
         }
-        
+
+        // collectionView.isHidden = true
     }
-    
+
+    func setupSearch() {
+        let omniBar = OmniBar.loadFromXib()
+//        omniBar.omniDelegate = self
+        omniBar.frame = omniBarContainer.bounds
+        omniBarContainer.addSubview(omniBar)
+        self.omniBar = omniBar
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        toolbar.isHidden = AppWidthObserver.shared.isLargeWidth
-        displayModeTrailingConstraint.isActive = !AppWidthObserver.shared.isLargeWidth
         topFireButton.isHidden = !AppWidthObserver.shared.isLargeWidth
         topDoneButton.isHidden = !AppWidthObserver.shared.isLargeWidth
         topPlusButton.isHidden = !AppWidthObserver.shared.isLargeWidth
     }
     
     private func setupBackgroundView() {
-        let view = UIView(frame: collectionView.frame)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(gesture:))))
-        collectionView.backgroundView = view
+        // TODO a nice matt anderson background?
     }
     
-    private func refreshDisplayModeButton(theme: Theme = ThemeManager.shared.currentTheme) {
+    private func refreshDisplayModeButton(displayModeButton: UIButton, theme: Theme = ThemeManager.shared.currentTheme) {
         switch theme.currentImageSet {
         case .dark:
             // Reverse colors (selection)
@@ -135,10 +147,6 @@ class TabSwitcherViewController: UIViewController {
         view.layoutIfNeeded()
         self.scrollToInitialTab()
     }
-    
-    @objc func handleTap(gesture: UITapGestureRecognizer) {
-        dismiss()
-    }
 
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
@@ -164,7 +172,7 @@ class TabSwitcherViewController: UIViewController {
     }
     
     private func scrollToInitialTab() {
-        let index = tabsModel.currentIndex
+        guard let index = tabsModel.currentTab == nil ? 0 : tabsModel.indexOf(tab: tabsModel.currentTab!) else { return }
         guard index < collectionView.numberOfItems(inSection: 0) else { return }
         let indexPath = IndexPath(row: index, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
@@ -184,13 +192,13 @@ class TabSwitcherViewController: UIViewController {
         }
     }
     
-    fileprivate func bookmarkAll(_ tabs: [Tab] ) -> BookmarkAllResult {
+    fileprivate func bookmarkAll() -> BookmarkAllResult {
         
         let bookmarksManager = BookmarksManager()
         var newBookmarksCount: Int = 0
         var existingBookmarksCount: Int = 0
         
-        tabs.forEach { tab in
+        tabsModel.forEach { tab in
             if let link = tab.link {
                 if bookmarksManager.contains(url: link.url) {
                     existingBookmarksCount += 1
@@ -214,8 +222,8 @@ class TabSwitcherViewController: UIViewController {
         alert.overrideUserInterfaceStyle()
         alert.addAction(UIAlertAction(title: UserText.actionCancel, style: .cancel))
         alert.addAction(title: UserText.actionBookmark, style: .default) {
-            let savedState = self.bookmarkAll(self.tabsModel.tabs)
-            self.displayBookmarkAllStatusToast(with: savedState, openTabsCount: self.tabsModel.tabs.count)
+            let savedState = self.bookmarkAll()
+            self.displayBookmarkAllStatusToast(with: savedState, openTabsCount: self.tabsModel.count)
         }
         
         present(alert, animated: true, completion: nil)
@@ -229,8 +237,6 @@ class TabSwitcherViewController: UIViewController {
         } else {
             Pixel.fire(pixel: .tabSwitcherListEnabled)
         }
-        
-        refreshDisplayModeButton()
         
         UIView.transition(with: view,
                           duration: 0.3,
@@ -272,7 +278,7 @@ class TabSwitcherViewController: UIViewController {
         if let anchor = sender as? UIView {
             self.present(controller: alert, fromView: anchor)
         } else {
-            self.present(controller: alert, fromView: toolbar)
+            self.present(controller: alert, fromView: view)
         }
     }
 
@@ -289,17 +295,18 @@ extension TabSwitcherViewController: TabViewCellDelegate {
 
     func deleteTab(tab: Tab) {
         guard let index = tabsModel.indexOf(tab: tab) else { return }
+        let currentIndex = tabsModel.currentTab != nil ? tabsModel.indexOf(tab: tabsModel.currentTab!) : nil
         let isLastTab = tabsModel.count == 1
         if isLastTab {
             delegate.tabSwitcher(self, didRemoveTab: tab)
-            currentSelection = tabsModel.currentIndex
+            currentSelection = currentIndex
             refreshTitle()
             collectionView.reloadData()
         } else {
             collectionView.performBatchUpdates({
                 isProcessingUpdates = true
                 delegate.tabSwitcher(self, didRemoveTab: tab)
-                currentSelection = tabsModel.currentIndex
+                currentSelection = currentIndex
                 collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
             }, completion: { _ in
                 self.isProcessingUpdates = false
@@ -319,11 +326,16 @@ extension TabSwitcherViewController: TabViewCellDelegate {
 extension TabSwitcherViewController: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 3
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tabsModel.count
+        switch section {
+        case 0: return 0
+        case 1: return 0
+        case 2: return tabsModel.count
+        default: fatalError("Unexpected section \(section)")
+        }
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -345,6 +357,40 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
         
         return cell
     }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath)
+        -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath)
+                as? TabSwitcherHeaderCell else {
+            fatalError("Unable to cast header cell")
+        }
+
+        switch indexPath.section {
+
+        case 0:
+            header.label.text = "Pinned Sites"
+            header.displayModeButton.isHidden = true
+            header.fireButton.isHidden = true
+
+        case 1:
+            header.label.text = "Favorites"
+            header.displayModeButton.isHidden = true
+            header.fireButton.isHidden = true
+
+        case 2:
+            header.label.text = "Tabs"
+            header.displayModeButton.isHidden = false
+            header.fireButton.isHidden = false
+            header.fireButton.tintColor = ThemeManager.shared.currentTheme.barTintColor
+            refreshDisplayModeButton(displayModeButton: header.displayModeButton)
+
+        default: fatalError("Unexpected section \(indexPath.section)")
+
+        }
+
+        return header
+    }
+
 }
 
 extension TabSwitcherViewController: UICollectionViewDelegate {
@@ -369,7 +415,7 @@ extension TabSwitcherViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         tabsModel.moveTab(from: sourceIndexPath.row, to: destinationIndexPath.row)
-        currentSelection = tabsModel.currentIndex
+        currentSelection = tabsModel.currentTab != nil ? tabsModel.indexOf(tab: tabsModel.currentTab!) : nil
     }
 
 }
@@ -437,19 +483,28 @@ extension TabSwitcherViewController: Themable {
     
     func decorate(with theme: Theme) {
         view.backgroundColor = theme.backgroundColor
-        
-        refreshDisplayModeButton(theme: theme)
-        
+
+        searchBackground.backgroundColor = theme.barBackgroundColor
+        omniBar?.decorate(with: theme)
+        logoImage.image = theme.currentImageSet == .dark ? UIImage(named: "LogoLightText") : UIImage(named: "LogoDarkText")
+
         titleView.textColor = theme.barTintColor
         bookmarkAllButton.tintColor = theme.barTintColor
         topDoneButton.tintColor = theme.barTintColor
         topPlusButton.tintColor = theme.barTintColor
         topFireButton.tintColor = theme.barTintColor
-        
-        toolbar.barTintColor = theme.barBackgroundColor
-        toolbar.tintColor = theme.barTintColor
-        
+
         collectionView.reloadData()
+
     }
 }
+
+class TabSwitcherHeaderCell: UICollectionReusableView {
+
+    @IBOutlet var label: UILabel!
+    @IBOutlet var displayModeButton: UIButton!
+    @IBOutlet var fireButton: UIButton!
+
+}
+
 // swiftlint:enable file_length

@@ -416,12 +416,16 @@ class MainViewController: UIViewController {
     }
 
     fileprivate func attachHomeScreen() {
+        Swift.print("***", #function)
+
         logoContainer.isHidden = false
         findInPageView.isHidden = true
         chromeManager.detach()
-        
+
         currentTab?.dismiss()
         removeHomeScreen()
+
+        /*
 
         let controller = HomeViewController.loadFromStoryboard()
         homeController = controller
@@ -431,7 +435,14 @@ class MainViewController: UIViewController {
 
         addToView(controller: controller)
 
+        */
+
         refreshControls()
+
+        DispatchQueue.main.async {
+            self.showTabSwitcher()
+        }
+
     }
 
     fileprivate func removeHomeScreen() {
@@ -1320,6 +1331,8 @@ extension MainViewController: TabSwitcherButtonDelegate {
                 }
                 self.performSegue(withIdentifier: "ShowTabs", sender: self)
             })
+        } else {
+            self.performSegue(withIdentifier: "ShowTabs", sender: self)
         }
     }
 }

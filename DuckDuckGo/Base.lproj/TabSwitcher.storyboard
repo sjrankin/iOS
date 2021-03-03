@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G9p-Sf-e96">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G9p-Sf-e96">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -20,11 +20,25 @@
             <objects>
                 <viewController storyboardIdentifier="TabSwitcherViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="G9p-Sf-e96" customClass="TabSwitcherViewController" customModule="DuckDuckGo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WJ0-lP-E4v">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tabs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cy7-Lb-veV">
-                                <rect key="frame" x="171" y="12" width="33.5" height="16"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoLightText" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-J0-2pp">
+                                <rect key="frame" x="127" y="317" width="160" height="128"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lrh-3T-ZBi">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="89"/>
+                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9L-72-1Ou">
+                                <rect key="frame" x="0.0" y="44" width="414" height="45"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="7jX-Oj-Jtf"/>
+                                </constraints>
+                            </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tabs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cy7-Lb-veV">
+                                <rect key="frame" x="190.33333333333334" y="56" width="33.333333333333343" height="16"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" header="YES"/>
                                 </accessibility>
@@ -32,30 +46,18 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7l-vl-rDZ">
-                                <rect key="frame" x="316" y="3" width="50" height="34"/>
-                                <accessibility key="accessibilityConfiguration" label="Toggle between grid and list view"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="3is-x4-uWE"/>
-                                    <constraint firstAttribute="height" constant="34" id="XXt-3T-rvh"/>
-                                </constraints>
-                                <state key="normal" image="TabsToggleGrid"/>
-                                <connections>
-                                    <action selector="onDisplayModeButtonPressed:" destination="G9p-Sf-e96" eventType="touchUpInside" id="LRf-f4-30A"/>
-                                </connections>
-                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XZT-ek-lrC">
-                                <rect key="frame" x="0.0" y="46" width="375" height="577"/>
+                                <rect key="frame" x="0.0" y="90" width="414" height="806"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="14" minimumInteritemSpacing="14" id="bWt-k2-BEm">
                                     <size key="itemSize" width="327" height="206"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="14" minY="14" maxX="14" maxY="14"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TabViewGridCell" id="Mdh-yg-dRH" customClass="TabViewGridCell" customModule="DuckDuckGo" customModuleProvider="target">
-                                        <rect key="frame" x="24" y="14" width="327" height="206"/>
+                                        <rect key="frame" x="43.666666666666664" y="64" width="327" height="206"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="327" height="206"/>
@@ -97,7 +99,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TabUnread" translatesAutoresizingMaskIntoConstraints="NO" id="Gyy-py-IOg">
-                                                            <rect key="frame" x="22.5" y="21.5" width="9" height="9"/>
+                                                            <rect key="frame" x="22.666666666666668" y="21.666666666666668" width="9" height="9"/>
                                                             <accessibility key="accessibilityConfiguration" label="Tab Unread">
                                                                 <bool key="isElement" value="NO"/>
                                                             </accessibility>
@@ -182,7 +184,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TabViewListCell" id="Ml9-Ia-4eU" customClass="TabViewListCell" customModule="DuckDuckGo" customModuleProvider="target">
-                                        <rect key="frame" x="24" y="234" width="327" height="70"/>
+                                        <rect key="frame" x="43.666666666666664" y="284" width="327" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="327" height="70"/>
@@ -214,7 +216,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GlobeSmall" translatesAutoresizingMaskIntoConstraints="NO" id="ARc-nQ-K4S">
-                                                            <rect key="frame" x="14" y="26.5" width="17" height="17"/>
+                                                            <rect key="frame" x="14" y="26.666666666666671" width="17" height="17"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="17" id="9Z9-N6-wrb"/>
                                                                 <constraint firstAttribute="height" constant="17" id="vXM-m8-YnJ"/>
@@ -293,45 +295,61 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Header" id="6jk-tJ-sgx" customClass="TabSwitcherHeaderCell" customModule="DuckDuckGo" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tabs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdu-96-NW6">
+                                            <rect key="frame" x="15.999999999999996" y="16.666666666666668" width="35.666666666666657" height="17.000000000000004"/>
+                                            <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="yff-jg-TWA">
+                                            <rect key="frame" x="313" y="8" width="85" height="34"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7l-vl-rDZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="34"/>
+                                                    <accessibility key="accessibilityConfiguration" label="Toggle between grid and list view"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="3is-x4-uWE"/>
+                                                        <constraint firstAttribute="height" constant="34" id="XXt-3T-rvh"/>
+                                                    </constraints>
+                                                    <state key="normal" image="TabsToggleGrid"/>
+                                                    <connections>
+                                                        <action selector="onDisplayModeButtonPressed:" destination="G9p-Sf-e96" eventType="touchUpInside" id="LRf-f4-30A"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3xd-xV-hL4">
+                                                    <rect key="frame" x="66" y="0.0" width="19" height="34"/>
+                                                    <state key="normal" image="Fire"/>
+                                                    <connections>
+                                                        <action selector="onFirePressedWithSender:" destination="G9p-Sf-e96" eventType="touchUpInside" id="EH3-X0-sY7"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="yff-jg-TWA" firstAttribute="centerY" secondItem="6jk-tJ-sgx" secondAttribute="centerY" id="0i9-KH-rOp"/>
+                                        <constraint firstItem="Tdu-96-NW6" firstAttribute="centerY" secondItem="6jk-tJ-sgx" secondAttribute="centerY" id="deP-HC-2St"/>
+                                        <constraint firstItem="yff-jg-TWA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tdu-96-NW6" secondAttribute="trailing" id="kco-bZ-TiY"/>
+                                        <constraint firstAttribute="trailing" secondItem="yff-jg-TWA" secondAttribute="trailing" constant="16" id="mLA-nw-hwu"/>
+                                        <constraint firstItem="Tdu-96-NW6" firstAttribute="leading" secondItem="6jk-tJ-sgx" secondAttribute="leading" constant="16" id="saa-03-r0D"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="displayModeButton" destination="L7l-vl-rDZ" id="Gzr-Tm-7bY"/>
+                                        <outlet property="fireButton" destination="3xd-xV-hL4" id="6gY-aw-icY"/>
+                                        <outlet property="label" destination="Tdu-96-NW6" id="Im7-0P-OZ5"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="G9p-Sf-e96" id="gcb-SK-xXr"/>
                                     <outlet property="delegate" destination="G9p-Sf-e96" id="GK9-W4-6gs"/>
                                 </connections>
                             </collectionView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PrD-ff-flI">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="BUt-3S-Yua"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem systemItem="done" id="S1O-aT-Bgw">
-                                        <connections>
-                                            <action selector="onDonePressed:" destination="G9p-Sf-e96" id="yns-QI-PSf"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="C3E-Kk-DYK"/>
-                                    <barButtonItem title="Close all tabs and clear data" image="Fire" id="h1S-c2-Spf">
-                                        <inset key="imageInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <action selector="onFirePressedWithSender:" destination="G9p-Sf-e96" id="N2s-jE-SXY"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="MHa-87-9H2"/>
-                                    <barButtonItem title="New Tab" image="NewTab" id="nYf-xs-PE7">
-                                        <inset key="imageInsets" minX="0.0" minY="0.0" maxX="2" maxY="0.0"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="Add"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="onAddPressed:" destination="G9p-Sf-e96" id="DNG-FQ-8Bn"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="tintColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="barTintColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aH-nO-H3f">
-                                <rect key="frame" x="10" y="3" width="34" height="34"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aH-nO-H3f">
+                                <rect key="frame" x="10" y="47" width="34" height="34"/>
                                 <accessibility key="accessibilityConfiguration" label="Add all tabs as bookmarks"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="34" id="6Q4-Ue-lyF"/>
@@ -343,7 +361,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="0Ot-ck-ucS">
-                                <rect key="frame" x="202" y="8" width="84" height="24"/>
+                                <rect key="frame" x="241" y="52" width="84" height="24"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uIV-4q-5mj">
                                         <rect key="frame" x="0.0" y="0.0" width="30" height="24"/>
@@ -371,7 +389,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kW3-ZC-Axl">
-                                <rect key="frame" x="310" y="3.5" width="41" height="33"/>
+                                <rect key="frame" x="349" y="47.666666666666657" width="41" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
@@ -383,22 +401,25 @@
                         <color key="backgroundColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Nqt-nV-6p2" firstAttribute="bottom" secondItem="PrD-ff-flI" secondAttribute="bottom" id="0oA-Ll-zZd"/>
-                            <constraint firstItem="PrD-ff-flI" firstAttribute="leading" secondItem="WJ0-lP-E4v" secondAttribute="leading" id="B4L-BE-vvi"/>
-                            <constraint firstAttribute="trailing" secondItem="PrD-ff-flI" secondAttribute="trailing" id="BaM-0l-RFS"/>
+                            <constraint firstItem="DtY-J0-2pp" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="7jr-fe-atc"/>
                             <constraint firstItem="Cy7-Lb-veV" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="CZo-Zg-g4J"/>
-                            <constraint firstItem="L7l-vl-rDZ" firstAttribute="centerY" secondItem="2aH-nO-H3f" secondAttribute="centerY" id="EBw-Lz-g90"/>
+                            <constraint firstItem="K9L-72-1Ou" firstAttribute="top" secondItem="Nqt-nV-6p2" secondAttribute="top" id="DCD-ti-avY"/>
+                            <constraint firstItem="Lrh-3T-ZBi" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="EJ4-AK-51z"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="centerY" secondItem="uIV-4q-5mj" secondAttribute="centerY" id="FqY-pH-wqc"/>
-                            <constraint firstItem="L7l-vl-rDZ" firstAttribute="leading" secondItem="2aH-nO-H3f" secondAttribute="trailing" priority="999" constant="32" id="IIG-5E-55V"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="leading" secondItem="Nqt-nV-6p2" secondAttribute="leading" constant="10" id="IuL-gt-D87"/>
-                            <constraint firstItem="PrD-ff-flI" firstAttribute="top" secondItem="XZT-ek-lrC" secondAttribute="bottom" id="J8G-Xc-ZM0"/>
+                            <constraint firstItem="Lrh-3T-ZBi" firstAttribute="top" secondItem="WJ0-lP-E4v" secondAttribute="top" id="PKD-tD-7so"/>
                             <constraint firstItem="XZT-ek-lrC" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="SmA-Z9-yAN"/>
+                            <constraint firstItem="K9L-72-1Ou" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="TpO-0W-sbd"/>
                             <constraint firstItem="XZT-ek-lrC" firstAttribute="width" secondItem="Nqt-nV-6p2" secondAttribute="width" id="XCa-fk-cv9"/>
+                            <constraint firstItem="DtY-J0-2pp" firstAttribute="centerY" secondItem="Nqt-nV-6p2" secondAttribute="centerY" constant="-72" id="Z2P-5d-9Wg"/>
                             <constraint firstItem="Nqt-nV-6p2" firstAttribute="trailing" secondItem="kW3-ZC-Axl" secondAttribute="trailing" constant="24" id="bgO-Am-XdB"/>
+                            <constraint firstItem="Lrh-3T-ZBi" firstAttribute="bottom" secondItem="K9L-72-1Ou" secondAttribute="bottom" id="c6s-UD-3Ie"/>
                             <constraint firstItem="XZT-ek-lrC" firstAttribute="top" secondItem="Cy7-Lb-veV" secondAttribute="bottom" constant="18" id="dJv-kk-vTH"/>
+                            <constraint firstAttribute="bottom" secondItem="XZT-ek-lrC" secondAttribute="bottom" id="fp0-3S-a6c"/>
                             <constraint firstItem="kW3-ZC-Axl" firstAttribute="leading" secondItem="0Ot-ck-ucS" secondAttribute="trailing" constant="24" id="g3D-GF-VHM"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="centerY" secondItem="Cy7-Lb-veV" secondAttribute="centerY" id="gF9-g1-aML"/>
-                            <constraint firstItem="Nqt-nV-6p2" firstAttribute="trailing" secondItem="L7l-vl-rDZ" secondAttribute="trailing" constant="9" id="moD-HB-CMD"/>
+                            <constraint firstItem="Lrh-3T-ZBi" firstAttribute="width" secondItem="WJ0-lP-E4v" secondAttribute="width" id="hYN-Xt-BUU"/>
+                            <constraint firstItem="K9L-72-1Ou" firstAttribute="width" secondItem="WJ0-lP-E4v" secondAttribute="width" id="jit-E5-KPV"/>
                             <constraint firstItem="kW3-ZC-Axl" firstAttribute="centerY" secondItem="2aH-nO-H3f" secondAttribute="centerY" id="nEe-Fk-lIy"/>
                             <constraint firstItem="Cy7-Lb-veV" firstAttribute="top" secondItem="Nqt-nV-6p2" secondAttribute="top" constant="12" id="pXw-xW-sAg"/>
                         </constraints>
@@ -406,13 +427,10 @@
                     <connections>
                         <outlet property="bookmarkAllButton" destination="2aH-nO-H3f" id="KSo-gy-fGA"/>
                         <outlet property="collectionView" destination="XZT-ek-lrC" id="iNF-Uj-4dl"/>
-                        <outlet property="displayModeButton" destination="L7l-vl-rDZ" id="F9o-yf-XT6"/>
-                        <outlet property="displayModeTrailingConstraint" destination="moD-HB-CMD" id="KKx-Jw-YFH"/>
-                        <outlet property="doneButton" destination="S1O-aT-Bgw" id="8I7-gH-bhZ"/>
-                        <outlet property="fireButton" destination="h1S-c2-Spf" id="VfW-9h-WGv"/>
-                        <outlet property="plusButton" destination="nYf-xs-PE7" id="9pP-uN-hsa"/>
+                        <outlet property="logoImage" destination="DtY-J0-2pp" id="x6A-SU-MyC"/>
+                        <outlet property="omniBarContainer" destination="K9L-72-1Ou" id="TdY-02-ta7"/>
+                        <outlet property="searchBackground" destination="Lrh-3T-ZBi" id="xGR-su-ehp"/>
                         <outlet property="titleView" destination="Cy7-Lb-veV" id="p6U-i5-pwf"/>
-                        <outlet property="toolbar" destination="PrD-ff-flI" id="6c2-zx-gsM"/>
                         <outlet property="topDoneButton" destination="kW3-ZC-Axl" id="zsi-5z-PHb"/>
                         <outlet property="topFireButton" destination="5nO-MZ-vSY" id="7Ab-ye-3JK"/>
                         <outlet property="topPlusButton" destination="uIV-4q-5mj" id="KDp-Ls-wWU"/>
@@ -618,7 +636,7 @@
         <image name="AddBookmarks" width="24" height="24"/>
         <image name="Fire" width="19" height="24"/>
         <image name="GlobeSmall" width="24" height="24"/>
-        <image name="NewTab" width="24" height="24"/>
+        <image name="LogoLightText" width="160" height="128"/>
         <image name="Remove" width="24" height="24"/>
         <image name="TabUnread" width="24" height="24"/>
         <image name="TabsToggleGrid" width="43" height="16"/>
@@ -628,6 +646,9 @@
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

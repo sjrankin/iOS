@@ -61,7 +61,8 @@ class TabsBarViewController: UIViewController {
     }
     
     var currentIndex: Int {
-        return tabsModel?.currentIndex ?? 0
+        // return tabsModel?.currentIndex ?? 0
+        return 0
     }
 
     var maxItems: Int {
