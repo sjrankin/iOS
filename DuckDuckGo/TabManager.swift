@@ -120,11 +120,11 @@ class TabManager {
         return controller
     }
 
-    func addHomeTab() {
-        model.add(tab: Tab())
-        model.select(tabAt: model.count - 1)
-        save()
-    }
+//    func addHomeTab() {
+//        model.add(tab: Tab())
+//        model.select(tabAt: model.count - 1)
+//        save()
+//    }
 
     func firstHomeTab() -> Tab? {
         return model.firstTab(where: { $0.link == nil })
@@ -178,10 +178,10 @@ class TabManager {
         let controller = buildController(forTab: tab, url: url)
         tabControllerCache.append(controller)
 
-        if let currentTab = model.currentTab {
+        if inBackground, let currentTab = model.currentTab {
             model.insert(tab: tab, after: currentTab)
         } else {
-            model.add(tab: tab)
+            model.insert(tab: tab, at: 0)
         }
 
         if !inBackground {

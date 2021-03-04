@@ -77,7 +77,7 @@ class FromWebViewTransition: WebViewTransition {
               let webView = currentTab.webView,
               let rowIndex = tabSwitcherViewController.tabsModel.indexOf(tab: currentTab.tabModel),
               let layoutAttr = tabSwitcherViewController.collectionView.layoutAttributesForItem(at: IndexPath(row: rowIndex, section: 0)),
-              let preview = tabSwitcherViewController.previewsSource.preview(for: currentTab.tabModel) else {
+              let preview = tabSwitcherViewController.previewsSource?.preview(for: currentTab.tabModel) else {
             tabSwitcherViewController.view.alpha = 1
             transitionContext.completeTransition(true)
             return
@@ -147,7 +147,7 @@ class ToWebViewTransition: WebViewTransition {
         imageContainer.frame = tabSwitcherCellFrame(for: layoutAttr)
         imageContainer.layer.cornerRadius = TabViewGridCell.Constants.cellCornerRadius
         
-        let preview = tabSwitcherViewController.previewsSource.preview(for: currentTab.tabModel)
+        let preview = tabSwitcherViewController.previewsSource?.preview(for: currentTab.tabModel)
         if let preview = preview {
             imageView.frame = previewFrame(for: imageContainer.bounds.size,
             preview: preview)

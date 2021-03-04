@@ -23,20 +23,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoLightText" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-J0-2pp">
-                                <rect key="frame" x="127" y="317" width="160" height="128"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Lighthouse" translatesAutoresizingMaskIntoConstraints="NO" id="DtY-J0-2pp">
+                                <rect key="frame" x="0.0" y="5" width="414" height="896"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lrh-3T-ZBi">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="89"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9L-72-1Ou">
-                                <rect key="frame" x="0.0" y="44" width="414" height="45"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="52"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="7jX-Oj-Jtf"/>
+                                    <constraint firstAttribute="height" constant="52" id="7jX-Oj-Jtf"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FBj-Dw-OS0">
+                                <rect key="frame" x="0.0" y="96" width="414" height="800"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="91y-dY-Tbg">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tabs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cy7-Lb-veV">
                                 <rect key="frame" x="190.33333333333334" y="56" width="33.333333333333343" height="16"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -46,8 +54,8 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XZT-ek-lrC">
-                                <rect key="frame" x="0.0" y="90" width="414" height="806"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="XZT-ek-lrC">
+                                <rect key="frame" x="0.0" y="96" width="414" height="800"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="14" minimumInteritemSpacing="14" id="bWt-k2-BEm">
                                     <size key="itemSize" width="327" height="206"/>
@@ -407,14 +415,20 @@
                             <constraint firstItem="Lrh-3T-ZBi" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="EJ4-AK-51z"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="centerY" secondItem="uIV-4q-5mj" secondAttribute="centerY" id="FqY-pH-wqc"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="leading" secondItem="Nqt-nV-6p2" secondAttribute="leading" constant="10" id="IuL-gt-D87"/>
+                            <constraint firstItem="FBj-Dw-OS0" firstAttribute="centerX" secondItem="XZT-ek-lrC" secondAttribute="centerX" id="MrP-hN-mCg"/>
+                            <constraint firstItem="FBj-Dw-OS0" firstAttribute="centerY" secondItem="XZT-ek-lrC" secondAttribute="centerY" id="NNv-IR-6w0"/>
                             <constraint firstItem="Lrh-3T-ZBi" firstAttribute="top" secondItem="WJ0-lP-E4v" secondAttribute="top" id="PKD-tD-7so"/>
+                            <constraint firstItem="DtY-J0-2pp" firstAttribute="height" secondItem="WJ0-lP-E4v" secondAttribute="height" id="Pl1-vn-L8L"/>
+                            <constraint firstItem="FBj-Dw-OS0" firstAttribute="height" secondItem="XZT-ek-lrC" secondAttribute="height" id="Q68-GW-TD1"/>
                             <constraint firstItem="XZT-ek-lrC" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="SmA-Z9-yAN"/>
                             <constraint firstItem="K9L-72-1Ou" firstAttribute="centerX" secondItem="Nqt-nV-6p2" secondAttribute="centerX" id="TpO-0W-sbd"/>
+                            <constraint firstItem="DtY-J0-2pp" firstAttribute="width" secondItem="WJ0-lP-E4v" secondAttribute="width" id="VIr-Zz-IbJ"/>
+                            <constraint firstItem="FBj-Dw-OS0" firstAttribute="width" secondItem="XZT-ek-lrC" secondAttribute="width" id="W9o-5c-vom"/>
                             <constraint firstItem="XZT-ek-lrC" firstAttribute="width" secondItem="Nqt-nV-6p2" secondAttribute="width" id="XCa-fk-cv9"/>
-                            <constraint firstItem="DtY-J0-2pp" firstAttribute="centerY" secondItem="Nqt-nV-6p2" secondAttribute="centerY" constant="-72" id="Z2P-5d-9Wg"/>
+                            <constraint firstItem="DtY-J0-2pp" firstAttribute="centerY" secondItem="Nqt-nV-6p2" secondAttribute="centerY" id="Z2P-5d-9Wg"/>
                             <constraint firstItem="Nqt-nV-6p2" firstAttribute="trailing" secondItem="kW3-ZC-Axl" secondAttribute="trailing" constant="24" id="bgO-Am-XdB"/>
                             <constraint firstItem="Lrh-3T-ZBi" firstAttribute="bottom" secondItem="K9L-72-1Ou" secondAttribute="bottom" id="c6s-UD-3Ie"/>
-                            <constraint firstItem="XZT-ek-lrC" firstAttribute="top" secondItem="Cy7-Lb-veV" secondAttribute="bottom" constant="18" id="dJv-kk-vTH"/>
+                            <constraint firstItem="XZT-ek-lrC" firstAttribute="top" secondItem="K9L-72-1Ou" secondAttribute="bottom" id="dJv-kk-vTH"/>
                             <constraint firstAttribute="bottom" secondItem="XZT-ek-lrC" secondAttribute="bottom" id="fp0-3S-a6c"/>
                             <constraint firstItem="kW3-ZC-Axl" firstAttribute="leading" secondItem="0Ot-ck-ucS" secondAttribute="trailing" constant="24" id="g3D-GF-VHM"/>
                             <constraint firstItem="2aH-nO-H3f" firstAttribute="centerY" secondItem="Cy7-Lb-veV" secondAttribute="centerY" id="gF9-g1-aML"/>
@@ -636,7 +650,7 @@
         <image name="AddBookmarks" width="24" height="24"/>
         <image name="Fire" width="19" height="24"/>
         <image name="GlobeSmall" width="24" height="24"/>
-        <image name="LogoLightText" width="160" height="128"/>
+        <image name="Lighthouse" width="360" height="724"/>
         <image name="Remove" width="24" height="24"/>
         <image name="TabUnread" width="24" height="24"/>
         <image name="TabsToggleGrid" width="43" height="16"/>

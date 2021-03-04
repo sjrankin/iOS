@@ -226,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         showKeyboardIfSettingOn = false
         
         if AppDeepLinks.isNewSearch(url: url) {
-            mainViewController?.newTab(reuseExisting: true)
+            // mainViewController?.newTab(reuseExisting: true)
             if url.getParam(name: "w") != nil {
                 Pixel.fire(pixel: .widgetNewSearch)
                 mainViewController?.enterSearch()

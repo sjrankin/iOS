@@ -307,7 +307,7 @@ extension MainViewController: TabsBarDelegate {
     }
     
     func tabsBarDidRequestNewTab(_ controller: TabsBarViewController) {
-        newTab()
+        // newTab()
     }
     
     func tabsBarDidRequestForgetAll(_ controller: TabsBarViewController) {
@@ -315,7 +315,7 @@ extension MainViewController: TabsBarDelegate {
     }
     
     func tabsBarDidRequestTabSwitcher(_ controller: TabsBarViewController) {
-        showTabSwitcher()
+        showTabSwitcherWithFocus(false)
     }
     
 }

@@ -55,10 +55,10 @@ class TabSwitcherViewController: UIViewController {
 
     // @IBOutlet var displayModeTrailingConstraint: NSLayoutConstraint!
 
-    weak var delegate: TabSwitcherDelegate!
+    weak var delegate: TabSwitcherDelegate?
+    weak var previewsSource: TabPreviewsSource?
     weak var tabsModel: TabsModel!
-    weak var previewsSource: TabPreviewsSource!
-    
+
     weak var reorderGestureRecognizer: UIGestureRecognizer?
     
     override var canBecomeFirstResponder: Bool { return true }
@@ -93,11 +93,12 @@ class TabSwitcherViewController: UIViewController {
         }
 
         // collectionView.isHidden = true
+        // collectionView.blur(style: .regular)
     }
 
     func setupSearch() {
         let omniBar = OmniBar.loadFromXib()
-//        omniBar.omniDelegate = self
+        omniBar.omniDelegate = self
         omniBar.frame = omniBarContainer.bounds
         omniBarContainer.addSubview(omniBar)
         self.omniBar = omniBar
@@ -246,7 +247,7 @@ class TabSwitcherViewController: UIViewController {
     }
 
     @IBAction func onAddPressed(_ sender: UIBarButtonItem) {
-        delegate.tabSwitcherDidRequestNewTab(tabSwitcher: self)
+        delegate?.tabSwitcherDidRequestNewTab(tabSwitcher: self)
         
         // Delay dismissal so new tab inertion can be animated.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -283,7 +284,7 @@ class TabSwitcherViewController: UIViewController {
     }
 
     private func forgetAll() {
-        self.delegate.tabSwitcherDidRequestForgetAll(tabSwitcher: self)
+        self.delegate?.tabSwitcherDidRequestForgetAll(tabSwitcher: self)
     }
 
     func dismiss() {
@@ -294,27 +295,31 @@ class TabSwitcherViewController: UIViewController {
 extension TabSwitcherViewController: TabViewCellDelegate {
 
     func deleteTab(tab: Tab) {
-        guard let index = tabsModel.indexOf(tab: tab) else { return }
-        let currentIndex = tabsModel.currentTab != nil ? tabsModel.indexOf(tab: tabsModel.currentTab!) : nil
-        let isLastTab = tabsModel.count == 1
-        if isLastTab {
-            delegate.tabSwitcher(self, didRemoveTab: tab)
-            currentSelection = currentIndex
-            refreshTitle()
-            collectionView.reloadData()
-        } else {
-            collectionView.performBatchUpdates({
-                isProcessingUpdates = true
-                delegate.tabSwitcher(self, didRemoveTab: tab)
-                currentSelection = currentIndex
-                collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
-            }, completion: { _ in
-                self.isProcessingUpdates = false
-                guard let current = self.currentSelection else { return }
-                self.refreshTitle()
-                self.collectionView.reloadItems(at: [IndexPath(row: current, section: 0)])
-            })
-        }
+        tabsModel.remove(tab: tab)
+        tabsModel.save()
+        collectionView.reloadData()
+//        guard let index = tabsModel.indexOf(tab: tab) else { return }
+//        let currentIndex = tabsModel.currentTab != nil ? tabsModel.indexOf(tab: tabsModel.currentTab!) : nil
+//
+//        let isLastTab = tabsModel.count == 1
+//        if isLastTab {
+//            delegate?.tabSwitcher(self, didRemoveTab: tab)
+//            currentSelection = currentIndex
+//            refreshTitle()
+//            collectionView.reloadData()
+//        } else {
+//            collectionView.performBatchUpdates({
+//                isProcessingUpdates = true
+//                delegate?.tabSwitcher(self, didRemoveTab: tab)
+//                currentSelection = currentIndex
+//                collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
+//            }, completion: { _ in
+//                self.isProcessingUpdates = false
+//                guard let current = self.currentSelection else { return }
+//                self.refreshTitle()
+//                self.collectionView.reloadItems(at: [IndexPath(row: current, section: 0)])
+//            })
+//        }
     }
     
     func isCurrent(tab: Tab) -> Bool {
@@ -349,9 +354,9 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
         
         if indexPath.row < tabsModel.count {
             let tab = tabsModel.get(tabAt: indexPath.row)
-            tab.addObserver(self)
+            // tab.addObserver(self)
             cell.update(withTab: tab,
-                        preview: previewsSource.preview(for: tab),
+                        preview: previewsSource?.preview(for: tab),
                         reorderRecognizer: reorderGestureRecognizer)
         }
         
@@ -486,7 +491,7 @@ extension TabSwitcherViewController: Themable {
 
         searchBackground.backgroundColor = theme.barBackgroundColor
         omniBar?.decorate(with: theme)
-        logoImage.image = theme.currentImageSet == .dark ? UIImage(named: "LogoLightText") : UIImage(named: "LogoDarkText")
+        // logoImage.image = theme.currentImageSet == .dark ? UIImage(named: "LogoLightText") : UIImage(named: "LogoDarkText")
 
         titleView.textColor = theme.barTintColor
         bookmarkAllButton.tintColor = theme.barTintColor
@@ -497,6 +502,74 @@ extension TabSwitcherViewController: Themable {
         collectionView.reloadData()
 
     }
+}
+
+extension TabSwitcherViewController: OmniBarDelegate {
+
+    func onOmniQueryUpdated(_ query: String) {
+        print("***", #function)
+    }
+
+    func onOmniQuerySubmitted(_ query: String) {
+        print("***", #function)
+        (presentingViewController as? MainViewController)?.loadQueryInNewTab(query, reuseExisting: true)
+        dismiss()
+    }
+
+    func onDismissed() {
+        print("***", #function)
+    }
+
+    func onSiteRatingPressed() {
+        print("***", #function)
+    }
+
+    func onMenuPressed() {
+        print("***", #function)
+    }
+
+    func onBookmarksPressed() {
+        print("***", #function)
+    }
+
+    func onSettingsPressed() {
+        print("***", #function)
+    }
+
+    func onCancelPressed() {
+        print("***", #function)
+    }
+
+    func onEnterPressed() {
+        print("***", #function)
+    }
+
+    func onRefreshPressed() {
+        print("***", #function)
+    }
+
+    func onBackPressed() {
+        print("***", #function)
+    }
+
+    func onForwardPressed() {
+        print("***", #function)
+    }
+
+    func onSharePressed() {
+        print("***", #function)
+    }
+
+    func onTextFieldWillBeginEditing(_ omniBar: OmniBar) {
+        print("***", #function)
+    }
+
+    // Returns whether field should select the text or not
+    func onTextFieldDidBeginEditing(_ omniBar: OmniBar) -> Bool {
+        print("***", #function)
+        return false
+    }
+
 }
 
 class TabSwitcherHeaderCell: UICollectionReusableView {

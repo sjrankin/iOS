@@ -153,7 +153,7 @@ class MainViewController: UIViewController {
     func startAddFavoriteFlow() {
         DaxDialogs.shared.enableAddFavoriteFlow()
         if DefaultTutorialSettings().hasSeenOnboarding {
-            newTab()
+            // newTab()
         }
     }
     
@@ -417,7 +417,6 @@ class MainViewController: UIViewController {
 
     fileprivate func attachHomeScreen() {
         Swift.print("***", #function)
-
         logoContainer.isHidden = false
         findInPageView.isHidden = true
         chromeManager.detach()
@@ -425,24 +424,24 @@ class MainViewController: UIViewController {
         currentTab?.dismiss()
         removeHomeScreen()
 
-        /*
+//
+//        let controller = HomeViewController.loadFromStoryboard()
+//        homeController = controller
+//
+//        controller.chromeDelegate = self
+//        controller.delegate = self
+//
+//        addToView(controller: controller)
+//
 
-        let controller = HomeViewController.loadFromStoryboard()
-        homeController = controller
-
-        controller.chromeDelegate = self
-        controller.delegate = self
-
-        addToView(controller: controller)
-
-        */
-
-        refreshControls()
-
-        DispatchQueue.main.async {
-            self.showTabSwitcher()
+        if let tab = tabManager.current {
+            addToView(tab: tab)
+        } else {
+            DispatchQueue.main.async {
+                self.showTabSwitcherWithFocus(false)
+            }
         }
-
+        refreshControls()
     }
 
     fileprivate func removeHomeScreen() {
@@ -792,19 +791,19 @@ class MainViewController: UIViewController {
         toolbar.setItems(newItems, animated: false)
     }
 
-    func newTab(reuseExisting: Bool = false) {
-        hideSuggestionTray()
-        currentTab?.dismiss()
-
-        if reuseExisting, let existing = tabManager.firstHomeTab() {
-            tabManager.selectTab(existing)
-        } else {
-            tabManager.addHomeTab()
-        }
-        attachHomeScreen()
-        homeController?.openedAsNewTab()
-        tabsBarController?.refresh(tabsModel: tabManager.model)
-    }
+//    func newTab(reuseExisting: Bool = false) {
+//        hideSuggestionTray()
+//        currentTab?.dismiss()
+//
+//        if reuseExisting, let existing = tabManager.firstHomeTab() {
+//            tabManager.selectTab(existing)
+//        } else {
+//            tabManager.addHomeTab()
+//        }
+//        attachHomeScreen()
+//        homeController?.openedAsNewTab()
+//        tabsBarController?.refresh(tabsModel: tabManager.model)
+//    }
     
     func updateFindInPage() {
         currentTab?.findInPage?.delegate = self
@@ -1154,7 +1153,7 @@ extension MainViewController: TabDelegate {
 
     func tabDidRequestNewTab(_ tab: TabViewController) {
         _ = findInPageView.resignFirstResponder()
-        newTab()
+        // newTab()
     }
 
     func tab(_ tab: TabViewController, didRequestNewBackgroundTabForUrl url: URL) {
@@ -1264,7 +1263,7 @@ extension MainViewController: TabDelegate {
 extension MainViewController: TabSwitcherDelegate {
 
     func tabSwitcherDidRequestNewTab(tabSwitcher: TabSwitcherViewController) {
-        newTab()
+        // newTab()
     }
 
     func tabSwitcher(_ tabSwitcher: TabSwitcherViewController, didSelectTab tab: Tab) {
@@ -1289,9 +1288,9 @@ extension MainViewController: TabSwitcherDelegate {
     }
 
     func tabSwitcherDidRequestForgetAll(tabSwitcher: TabSwitcherViewController) {
-        self.forgetAllWithAnimation {
-            tabSwitcher.dismiss(animated: false, completion: nil)
-        }
+        self.forgetAllWithAnimation(transitionCompletion: {
+            tabSwitcher.collectionView.reloadData()
+        }, showNextDaxDialog: false)
     }
     
 }
@@ -1313,15 +1312,15 @@ extension MainViewController: BookmarksDelegate {
 extension MainViewController: TabSwitcherButtonDelegate {
     
     func launchNewTab(_ button: TabSwitcherButton) {
-        newTab()
+        // newTab()
     }
 
     func showTabSwitcher(_ button: TabSwitcherButton) {
         Pixel.fire(pixel: .tabBarTabSwitcherPressed)
-        showTabSwitcher()
+        showTabSwitcherWithFocus(false)
     }
 
-    func showTabSwitcher() {
+    func showTabSwitcherWithFocus(_ focusSearch: Bool) {
         if let currentTab = currentTab {
             currentTab.preparePreview(completion: { image in
                 if let image = image {
@@ -1329,10 +1328,10 @@ extension MainViewController: TabSwitcherButtonDelegate {
                                                forTab: currentTab.tabModel)
                     
                 }
-                self.performSegue(withIdentifier: "ShowTabs", sender: self)
+                self.performSegue(withIdentifier: "ShowTabs", sender: focusSearch)
             })
         } else {
-            self.performSegue(withIdentifier: "ShowTabs", sender: self)
+            self.performSegue(withIdentifier: "ShowTabs", sender: focusSearch)
         }
     }
 }
@@ -1367,7 +1366,7 @@ extension MainViewController: AutoClearWorker {
         findInPageView?.done()
         tabManager.removeAll()
         showBars()
-        attachHomeScreen()
+        // attachHomeScreen()
         tabsBarController?.refresh(tabsModel: tabManager.model)
         Favicons.shared.clearCache(.tabs)
     }
@@ -1395,15 +1394,18 @@ extension MainViewController: AutoClearWorker {
             transitionCompletion?()
         } completion: {
             Instruments.shared.endTimedEvent(for: spid)
-            if showNextDaxDialog {
-                self.homeController?.showNextDaxDialog()
-            } else if KeyboardSettings().onNewTab {
-                let showKeyboardAfterFireButton = DispatchWorkItem {
-                    self.enterSearch()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: showKeyboardAfterFireButton)
-                self.showKeyboardAfterFireButton = showKeyboardAfterFireButton
-            }
+//            if showNextDaxDialog {
+//                self.homeController?.showNextDaxDialog()
+//            } else if KeyboardSettings().onNewTab {
+//                let showKeyboardAfterFireButton = DispatchWorkItem {
+//                    self.enterSearch()
+//                }
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: showKeyboardAfterFireButton)
+//                self.showKeyboardAfterFireButton = showKeyboardAfterFireButton
+//            }
+
+            self.showTabSwitcherWithFocus(KeyboardSettings().onNewTab)
+
         }
     }
     

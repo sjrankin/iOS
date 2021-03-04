@@ -161,7 +161,7 @@ extension MainViewController {
         guard tabSwitcherController == nil else { return }
         
         if currentTab != nil {
-            newTab()
+            // newTab()
         } else {
             keyboardFind()
         }
@@ -198,7 +198,7 @@ extension MainViewController {
         guard tabSwitcherController == nil else { return }
         
         onCancelPressed()
-        showTabSwitcher()
+        showTabSwitcherWithFocus(false)
     }
     
     @objc func keyboardBrowserForward() {

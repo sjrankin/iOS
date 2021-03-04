@@ -54,16 +54,12 @@ public class TabsModel: NSObject, NSCoding {
             return nil
         }
 
-        // we migrated from an optional int to an actual int
-        var currentIndex = 0
-        if let storedIndex = decoder.decodeObject(forKey: NSCodingKeys.legacyIndex) as? Int {
+        var currentIndex: Int?
+        if var storedIndex = decoder.decodeObject(forKey: NSCodingKeys.legacyIndex) as? Int {
+            if storedIndex < 0 || storedIndex >= tabs.count {
+                storedIndex = 0
+            }
             currentIndex = storedIndex
-        } else {
-            currentIndex = decoder.decodeInteger(forKey: NSCodingKeys.currentIndex)
-        }
-        
-        if currentIndex < 0 || currentIndex >= tabs.count {
-            currentIndex = 0
         }
         self.init(tabs: tabs, currentIndex: currentIndex, desktop: UIDevice.current.userInterfaceIdiom == .pad)
     }
@@ -146,8 +142,7 @@ public class TabsModel: NSObject, NSCoding {
 
     func clearAll() {
         tabs.removeAll()
-        tabs.append(Tab())
-        currentIndex = 0
+        currentIndex = nil
     }
 
     func insert(tab: Tab, after afterTab: Tab) {
