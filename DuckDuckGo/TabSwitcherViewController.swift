@@ -64,12 +64,15 @@ class TabSwitcherViewController: UIViewController {
     override var canBecomeFirstResponder: Bool { return true }
     
     var currentSelection: Int?
-    
+    lazy var bookmarksManager: BookmarksManager = BookmarksManager()
+
     private var tabSwitcherSettings: TabSwitcherSettings = DefaultTabSwitcherSettings()
     private var isProcessingUpdates = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        collectionView.register(UINib(nibName: "FavoriteHomeCell", bundle: nil), forCellWithReuseIdentifier: "favorite")
 
         setupSearch()
 
@@ -337,21 +340,44 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0: return 0
-        case 1: return 0
+        case 1: return bookmarksManager.favoritesCount
         case 2: return tabsModel.count
         default: fatalError("Unexpected section \(section)")
         }
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+
+        switch indexPath.section {
+        case 1:
+            return favoriteCell(atIndexPath: indexPath)
+
+        case 2:
+            return tabCell(atIndexPath: indexPath)
+
+        default: fatalError()
+        }
+    }
+
+    func favoriteCell(atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favorite", for: indexPath) as? FavoriteHomeCell else {
+            fatalError("Failed to dequeue cell favorite as FavoriteHomeCell")
+        }
+
+        cell.decorate(with: ThemeManager.shared.currentTheme)
+        cell.updateFor(link: bookmarksManager.favorite(atIndex: indexPath.row)!)
+
+        return cell
+    }
+
+    func tabCell(atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cellIdentifier = tabSwitcherSettings.isGridViewEnabled ? TabViewGridCell.reuseIdentifier : TabViewListCell.reuseIdentifier
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TabViewCell else {
             fatalError("Failed to dequeue cell \(cellIdentifier) as TabViewCell")
         }
         cell.delegate = self
         cell.isDeleting = false
-        
+
         if indexPath.row < tabsModel.count {
             let tab = tabsModel.get(tabAt: indexPath.row)
             // tab.addObserver(self)
@@ -359,7 +385,7 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
                         preview: previewsSource?.preview(for: tab),
                         reorderRecognizer: reorderGestureRecognizer)
         }
-        
+
         return cell
     }
 
@@ -401,8 +427,21 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
 extension TabSwitcherViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        currentSelection = indexPath.row
-        markCurrentAsViewedAndDismiss()
+
+        switch indexPath.section {
+        case 1:
+            let link = bookmarksManager.favorite(atIndex: indexPath.row)!
+            (presentingViewController as? MainViewController)?.loadUrlInNewTab(link.url, reuseExisting: true)
+            dismiss()
+
+        case 2:
+            currentSelection = indexPath.row
+            markCurrentAsViewedAndDismiss()
+
+        default: fatalError()
+
+        }
+
     }
    
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
@@ -454,7 +493,11 @@ extension TabSwitcherViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+
+        guard 2 == indexPath.section else {
+            return .init(width: 68, height: 110)
+        }
+
         if tabSwitcherSettings.isGridViewEnabled {
             let columnWidth = calculateColumnWidth(minimumColumnWidth: 150, maxColumns: 4)
             let rowHeight = calculateRowHeight(columnWidth: columnWidth)
@@ -538,6 +581,7 @@ extension TabSwitcherViewController: OmniBarDelegate {
 
     func onCancelPressed() {
         print("***", #function)
+        omniBar?.resignFirstResponder()
     }
 
     func onEnterPressed() {

@@ -543,6 +543,7 @@ class MainViewController: UIViewController {
         allowContentUnderflow = false
         let tab = tabManager.select(tabAt: index)
         select(tab: tab)
+        tabManager.model.moveTab(from: index, to: 0)
     }
 
     fileprivate func select(tab: TabViewController) {
@@ -1392,6 +1393,7 @@ extension MainViewController: AutoClearWorker {
             self.forgetTabs()
         } onTransitionCompleted: {
             transitionCompletion?()
+            self.showTabSwitcherWithFocus(KeyboardSettings().onNewTab)
         } completion: {
             Instruments.shared.endTimedEvent(for: spid)
 //            if showNextDaxDialog {

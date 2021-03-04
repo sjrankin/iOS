@@ -149,7 +149,7 @@ public class TabsModel: NSObject, NSCoding {
         guard let index = indexOf(tab: afterTab) else {
             fatalError("No index for tab")
         }
-        insert(tab: tab, at: index)
+        insert(tab: tab, at: index + 1)
     }
 
     func select(tab: Tab) {
