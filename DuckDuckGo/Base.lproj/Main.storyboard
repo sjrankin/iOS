@@ -334,6 +334,7 @@
                         <segue destination="Idd-9P-bE6" kind="presentation" identifier="ReportBrokenSite" modalPresentationStyle="overFullScreen" id="Igb-19-s0y"/>
                         <segue destination="0sP-vt-2ZT" kind="presentation" identifier="Bookmarks" id="jTg-q6-spe"/>
                         <segue destination="HTt-o2-2gp" kind="presentation" identifier="DaxOnboarding" animates="NO" modalPresentationStyle="overFullScreen" id="eix-GD-QaT"/>
+                        <segue destination="wow-Ka-MKb" kind="presentation" identifier="PinnedSite" animates="NO" modalPresentationStyle="overCurrentContext" id="t3t-aR-ofE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2QN-Mc-SXu" sceneMemberID="firstResponder"/>
@@ -371,6 +372,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tVd-3C-mpV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="941" y="83"/>
+        </scene>
+        <!--PinnedSite-->
+        <scene sceneID="GEB-FE-pz8">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PinnedSite" id="wow-Ka-MKb" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Md1-DQ-sh5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-470" y="536"/>
         </scene>
         <!--Settings-->
         <scene sceneID="bSV-mo-fgW">

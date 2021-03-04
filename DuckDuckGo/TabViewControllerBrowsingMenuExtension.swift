@@ -31,6 +31,10 @@ extension TabViewController {
         }
         
         if let link = link, !isError {
+            if let action = buildPinAction(forLink: link) {
+                alert.addAction(action)
+            }
+
             if let action = buildFindInPageAction(forLink: link) {
                 alert.addAction(action)
             }
@@ -72,7 +76,20 @@ extension TabViewController {
         alert.addAction(title: UserText.actionCancel, style: .cancel)
         return alert
     }
-    
+
+    private func buildPinAction(forLink link: Link) -> UIAlertAction? {
+        if PinnedSiteStore.shared.isPinned(link.url.host) {
+            return UIAlertAction(title: "Unpin Site", style: .default) { _ in
+                Swift.print("***", #function, "Unpin")
+            }
+        } else {
+            return UIAlertAction(title: "Pin Site", style: .default) { _ in
+                Swift.print("***", #function, "Pin")
+                self.pinSite()
+            }
+        }
+    }
+
     private func buildKeepSignInAction(forLink link: Link) -> UIAlertAction? {
         guard #available(iOS 13, *) else { return nil }
         guard let domain = link.url.host, !appUrls.isDuckDuckGo(url: link.url) else { return nil }
@@ -169,4 +186,20 @@ extension TabViewController {
             operation(domain)
         }
     }
+}
+
+extension TabViewController {
+
+    func pinSite() {
+        guard let host = url?.host else { return }
+
+        PinnedSiteStore.shared.pin(host)
+
+        // close this tab
+        delegate?.tabDidRequestClose(self)
+
+        // open pinned tab
+        delegate?.tabDidRequestLaunchPinnedSite(self, forHost: host)
+    }
+
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wcH-RF-B9P">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Pinned Site Controller-->
+        <scene sceneID="hxq-Hd-5QP">
+            <objects>
+                <viewController id="wcH-RF-B9P" customClass="PinnedSiteController" customModule="DuckDuckGo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rfl-Oi-q1d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TYo-ZR-bKC" userLabel="NavigationHeader">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                <subviews>
+                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I3m-pP-gV7">
+                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                        <items>
+                                            <navigationItem title="Title" id="TKg-C3-P7W">
+                                                <barButtonItem key="leftBarButtonItem" title="Item" id="LOK-ai-iR6"/>
+                                                <barButtonItem key="rightBarButtonItem" title="Home" style="done" id="rCh-lO-PyF">
+                                                    <connections>
+                                                        <action selector="homeAction" destination="wcH-RF-B9P" id="jSf-Pa-eTa"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
+                                        </items>
+                                    </navigationBar>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemTealColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="I3m-pP-gV7" secondAttribute="trailing" id="A9a-Eq-rKK"/>
+                                    <constraint firstAttribute="bottom" secondItem="I3m-pP-gV7" secondAttribute="bottom" symbolic="YES" id="AsD-2P-Con"/>
+                                    <constraint firstItem="I3m-pP-gV7" firstAttribute="leading" secondItem="TYo-ZR-bKC" secondAttribute="leading" id="Mu4-0f-689"/>
+                                </constraints>
+                            </view>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6fF-6f-lyF" userLabel="TabContainer">
+                                <rect key="frame" x="0.0" y="88" width="375" height="724"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mx1-2V-eB7"/>
+                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                        <constraints>
+                            <constraint firstItem="6fF-6f-lyF" firstAttribute="width" secondItem="rfl-Oi-q1d" secondAttribute="width" id="3Rh-NG-Thg"/>
+                            <constraint firstItem="6fF-6f-lyF" firstAttribute="centerX" secondItem="mx1-2V-eB7" secondAttribute="centerX" id="HRn-D1-VoN"/>
+                            <constraint firstItem="6fF-6f-lyF" firstAttribute="bottom" secondItem="rfl-Oi-q1d" secondAttribute="bottom" id="WOj-Ud-db4"/>
+                            <constraint firstAttribute="top" secondItem="TYo-ZR-bKC" secondAttribute="top" id="hyK-70-pDK"/>
+                            <constraint firstItem="6fF-6f-lyF" firstAttribute="top" secondItem="TYo-ZR-bKC" secondAttribute="bottom" id="jaT-iN-kp1"/>
+                            <constraint firstItem="mx1-2V-eB7" firstAttribute="top" secondItem="TYo-ZR-bKC" secondAttribute="bottom" constant="-44" id="k17-D5-Fmm"/>
+                            <constraint firstItem="TYo-ZR-bKC" firstAttribute="centerX" secondItem="mx1-2V-eB7" secondAttribute="centerX" id="opy-df-LgI"/>
+                            <constraint firstItem="TYo-ZR-bKC" firstAttribute="width" secondItem="rfl-Oi-q1d" secondAttribute="width" id="rNL-af-BwL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="homeButton" destination="rCh-lO-PyF" id="BWe-kx-QPw"/>
+                        <outlet property="navigationBar" destination="I3m-pP-gV7" id="NEr-yy-KiS"/>
+                        <outlet property="navigationContainer" destination="TYo-ZR-bKC" id="OyC-ml-2au"/>
+                        <outlet property="tabContainer" destination="6fF-6f-lyF" id="Y15-qZ-Bx9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gV9-Dz-Rgx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-560.79999999999995" y="22.167487684729064"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

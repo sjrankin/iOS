@@ -339,7 +339,7 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0: return 0
+        case 0: return PinnedSiteStore.shared.count
         case 1: return bookmarksManager.favoritesCount
         case 2: return tabsModel.count
         default: fatalError("Unexpected section \(section)")
@@ -349,6 +349,9 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         switch indexPath.section {
+        case 0:
+            return pinnedSiteCell(atIndexPath: indexPath)
+
         case 1:
             return favoriteCell(atIndexPath: indexPath)
 
@@ -359,14 +362,22 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
         }
     }
 
+    func pinnedSiteCell(atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favorite", for: indexPath) as? FavoriteHomeCell else {
+            fatalError("Failed to dequeue cell favorite as FavoriteHomeCell")
+        }
+        guard let host = PinnedSiteStore.shared.pinnedSite(at: indexPath.row) else { fatalError() }
+        cell.decorate(with: ThemeManager.shared.currentTheme)
+        cell.updateFor(link: Link(title: host, url: URL(string: "https://\(host)")!))
+        return cell
+    }
+
     func favoriteCell(atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favorite", for: indexPath) as? FavoriteHomeCell else {
             fatalError("Failed to dequeue cell favorite as FavoriteHomeCell")
         }
-
         cell.decorate(with: ThemeManager.shared.currentTheme)
         cell.updateFor(link: bookmarksManager.favorite(atIndex: indexPath.row)!)
-
         return cell
     }
 
@@ -429,10 +440,15 @@ extension TabSwitcherViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         switch indexPath.section {
+        case 0:
+            guard let host = PinnedSiteStore.shared.pinnedSite(at: indexPath.row) else { fatalError() }
+            dismiss()
+            (presentingViewController as? MainViewController)?.launchPinnedSite(host)
+
         case 1:
             let link = bookmarksManager.favorite(atIndex: indexPath.row)!
-            (presentingViewController as? MainViewController)?.loadUrlInNewTab(link.url, reuseExisting: true)
             dismiss()
+            (presentingViewController as? MainViewController)?.loadUrlInNewTab(link.url, reuseExisting: true)
 
         case 2:
             currentSelection = indexPath.row
@@ -555,8 +571,8 @@ extension TabSwitcherViewController: OmniBarDelegate {
 
     func onOmniQuerySubmitted(_ query: String) {
         print("***", #function)
-        (presentingViewController as? MainViewController)?.loadQueryInNewTab(query, reuseExisting: true)
         dismiss()
+        (presentingViewController as? MainViewController)?.loadQueryInNewTab(query, reuseExisting: true)
     }
 
     func onDismissed() {

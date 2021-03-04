@@ -140,7 +140,9 @@ public class Favicons {
         
         guard let domain = domain,
             let resource = defaultResource(forDomain: domain),
-            (Constants.bookmarksCache.isCached(forKey: resource.cacheKey) || bookmarksStore.contains(domain: domain)),
+            (Constants.bookmarksCache.isCached(forKey: resource.cacheKey)
+                || bookmarksStore.contains(domain: domain)
+                || PinnedSiteStore.shared.isPinned(domain)),
             let options = kfOptions(forDomain: domain, usingCache: .bookmarks) else { return }
 
         let replace = {
@@ -155,7 +157,7 @@ public class Favicons {
             case .success(let cachedImage):
                 if let cachedImage = cachedImage, cachedImage.size.width < image.size.width {
                     replace()
-                } else if self.bookmarksStore.contains(domain: domain) {
+                } else if self.bookmarksStore.contains(domain: domain) || PinnedSiteStore.shared.isPinned(domain) {
                     replace()
                 }
                 

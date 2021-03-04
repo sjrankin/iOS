@@ -57,4 +57,6 @@ protocol TabDelegate: class {
 
     func showBars()
 
+    func tabDidRequestLaunchPinnedSite(_ tab: TabViewController, forHost: String)
+    
 }

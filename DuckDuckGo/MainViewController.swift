@@ -83,6 +83,8 @@ class MainViewController: UIViewController {
     var tabsBarController: TabsBarViewController?
     var suggestionTrayController: SuggestionTrayViewController?
 
+    weak var pinnedSiteController: PinnedSiteController?
+
     private lazy var appUrls: AppUrls = AppUrls()
 
     var tabManager: TabManager!
@@ -283,6 +285,12 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         ViewHighlighter.hideAll()
+
+        if let controller = segue.destination as? PinnedSiteController, let host = sender as? String {
+            controller.pinnedHost = host
+            pinnedSiteController = controller
+            return
+        }
 
         if let controller = segue.destination as? SuggestionTrayViewController {
             controller.dismissHandler = dismissSuggestionTray
@@ -1111,6 +1119,19 @@ extension MainViewController: HomeControllerDelegate {
 }
 
 extension MainViewController: TabDelegate {
+
+    func tabDidRequestLaunchPinnedSite(_ tab: TabViewController, forHost host: String) {
+        launchPinnedSite(host)
+    }
+
+    func launchPinnedSite(_ host: String) {
+        Swift.print("***", #function, host)
+        if let controller = pinnedSiteController {
+            controller.pinnedHost = host
+            return
+        }
+        self.performSegue(withIdentifier: "PinnedSite", sender: host)
+    }
 
     func tab(_ tab: TabViewController,
              didRequestNewWebViewWithConfiguration configuration: WKWebViewConfiguration,
