@@ -24,7 +24,7 @@
                                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                         <items>
                                             <navigationItem title="Title" id="TKg-C3-P7W">
-                                                <barButtonItem key="leftBarButtonItem" title="Item" id="LOK-ai-iR6"/>
+                                                <barButtonItem key="leftBarButtonItem" title="Item" image="AppIconBlue29x29.png" style="plain" id="LOK-ai-iR6"/>
                                                 <barButtonItem key="rightBarButtonItem" title="Home" style="done" id="rCh-lO-PyF">
                                                     <connections>
                                                         <action selector="homeAction" destination="wcH-RF-B9P" id="jSf-Pa-eTa"/>
@@ -63,6 +63,7 @@
                         <outlet property="homeButton" destination="rCh-lO-PyF" id="BWe-kx-QPw"/>
                         <outlet property="navigationBar" destination="I3m-pP-gV7" id="NEr-yy-KiS"/>
                         <outlet property="navigationContainer" destination="TYo-ZR-bKC" id="OyC-ml-2au"/>
+                        <outlet property="switcherButton" destination="LOK-ai-iR6" id="9bA-MX-1u0"/>
                         <outlet property="tabContainer" destination="6fF-6f-lyF" id="Y15-qZ-Bx9"/>
                     </connections>
                 </viewController>
@@ -72,6 +73,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="AppIconBlue29x29.png" width="29" height="29"/>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

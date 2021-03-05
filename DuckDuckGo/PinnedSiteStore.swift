@@ -56,4 +56,8 @@ public class PinnedSiteStore {
         return hosts[index]
     }
 
+    public func forEach(body: (String) -> Void) {
+        hosts.forEach(body)
+    }
+
 }

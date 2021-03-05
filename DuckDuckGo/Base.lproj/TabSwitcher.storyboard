@@ -314,10 +314,17 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="yff-jg-TWA">
-                                            <rect key="frame" x="313" y="3" width="85" height="34"/>
+                                            <rect key="frame" x="273" y="3" width="125" height="34"/>
                                             <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOb-kQ-Ppy">
+                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="34"/>
+                                                    <state key="normal" image="Bookmarks"/>
+                                                    <connections>
+                                                        <segue destination="EdZ-BL-VlH" kind="presentation" id="EyW-vg-Tax"/>
+                                                    </connections>
+                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7l-vl-rDZ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="34"/>
+                                                    <rect key="frame" x="40" y="0.0" width="50" height="34"/>
                                                     <accessibility key="accessibilityConfiguration" label="Toggle between grid and list view"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="3is-x4-uWE"/>
@@ -329,7 +336,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3xd-xV-hL4">
-                                                    <rect key="frame" x="66" y="0.0" width="19" height="34"/>
+                                                    <rect key="frame" x="106" y="0.0" width="19" height="34"/>
                                                     <state key="normal" image="Fire"/>
                                                     <connections>
                                                         <action selector="onFirePressedWithSender:" destination="G9p-Sf-e96" eventType="touchUpInside" id="EH3-X0-sY7"/>
@@ -346,6 +353,7 @@
                                         <constraint firstItem="Tdu-96-NW6" firstAttribute="leading" secondItem="6jk-tJ-sgx" secondAttribute="leading" constant="16" id="saa-03-r0D"/>
                                     </constraints>
                                     <connections>
+                                        <outlet property="bookmarksButton" destination="tOb-kQ-Ppy" id="k92-lC-CgB"/>
                                         <outlet property="displayModeButton" destination="L7l-vl-rDZ" id="Gzr-Tm-7bY"/>
                                         <outlet property="fireButton" destination="3xd-xV-hL4" id="6gY-aw-icY"/>
                                         <outlet property="label" destination="Tdu-96-NW6" id="Im7-0P-OZ5"/>
@@ -644,10 +652,19 @@
             </objects>
             <point key="canvasLocation" x="2393.4782608695655" y="-304.07608695652175"/>
         </scene>
+        <!--Bookmarks-->
+        <scene sceneID="VWU-3r-nbD">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Bookmarks" id="EdZ-BL-VlH" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rvT-GN-J05" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2282" y="64"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Add" width="24" height="24"/>
         <image name="AddBookmarks" width="24" height="24"/>
+        <image name="Bookmarks" width="24" height="24"/>
         <image name="Fire" width="19" height="24"/>
         <image name="GlobeSmall" width="24" height="24"/>
         <image name="Lighthouse" width="360" height="724"/>

@@ -135,7 +135,22 @@ public class Favicons {
         }
         
     }
-    
+
+    public func quickLoad(forDomain domain: String, cacheType: CacheType = .bookmarks) -> UIImage? {
+        guard let resource = defaultResource(forDomain: domain),
+              let cache = Constants.caches[cacheType] else { return nil }
+        if let image = cache.retrieveImageInMemoryCache(forKey: resource.cacheKey) {
+            return image
+        } else {
+            // Load manually otherwise Kingfisher won't load it if the file's modification date > current date
+            let url = cache.diskStorage.cacheFileURL(forKey: resource.cacheKey)
+            guard let data = (try? Data(contentsOf: url)), let image = UIImage(data: data) else {
+                return nil
+            }
+            return image
+        }
+    }
+
     func replaceBookmarksFavicon(forDomain domain: String?, withImage image: UIImage) {
         
         guard let domain = domain,

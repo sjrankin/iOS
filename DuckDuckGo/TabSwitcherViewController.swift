@@ -152,6 +152,16 @@ class TabSwitcherViewController: UIViewController {
         self.scrollToInitialTab()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.destination.children.count > 0,
+            let controller = segue.destination.children[0] as? BookmarksViewController {
+            controller.delegate = self
+            return
+        }
+        
+    }
+
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
@@ -217,7 +227,7 @@ class TabSwitcherViewController: UIViewController {
         
         return (newBookmarksCount: newBookmarksCount, existingBookmarksCount: existingBookmarksCount)
     }
-    
+
     @IBAction func onBookmarkAllOpenTabsPressed(_ sender: UIButton) {
          
         let alert = UIAlertController(title: UserText.alertBookmarkAllTitle,
@@ -407,17 +417,19 @@ extension TabSwitcherViewController: UICollectionViewDataSource {
             fatalError("Unable to cast header cell")
         }
 
+        header.displayModeButton.isHidden = true
+        header.fireButton.isHidden = true
+        header.bookmarksButton.isHidden = true
+
         switch indexPath.section {
 
         case 0:
             header.label.text = "Pinned Sites"
-            header.displayModeButton.isHidden = true
-            header.fireButton.isHidden = true
 
         case 1:
             header.label.text = "Favorites"
-            header.displayModeButton.isHidden = true
-            header.fireButton.isHidden = true
+            header.bookmarksButton.isHidden = false
+            header.bookmarksButton.tintColor = ThemeManager.shared.currentTheme.barTintColor
 
         case 2:
             header.label.text = "Tabs"
@@ -447,8 +459,7 @@ extension TabSwitcherViewController: UICollectionViewDelegate {
 
         case 1:
             let link = bookmarksManager.favorite(atIndex: indexPath.row)!
-            dismiss()
-            (presentingViewController as? MainViewController)?.loadUrlInNewTab(link.url, reuseExisting: true)
+            launchLinkInNewTab(link)
 
         case 2:
             currentSelection = indexPath.row
@@ -458,6 +469,11 @@ extension TabSwitcherViewController: UICollectionViewDelegate {
 
         }
 
+    }
+
+    func launchLinkInNewTab(_ link: Link) {
+        dismiss()
+        (presentingViewController as? MainViewController)?.loadUrlInNewTab(link.url, reuseExisting: true)
     }
    
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
@@ -632,11 +648,24 @@ extension TabSwitcherViewController: OmniBarDelegate {
 
 }
 
+extension TabSwitcherViewController: BookmarksDelegate {
+
+    func bookmarksDidSelect(link: Link) {
+        launchLinkInNewTab(link)
+    }
+
+    func bookmarksUpdated() {
+        collectionView.reloadData()
+    }
+
+}
+
 class TabSwitcherHeaderCell: UICollectionReusableView {
 
     @IBOutlet var label: UILabel!
     @IBOutlet var displayModeButton: UIButton!
     @IBOutlet var fireButton: UIButton!
+    @IBOutlet var bookmarksButton: UIButton!
 
 }
 
