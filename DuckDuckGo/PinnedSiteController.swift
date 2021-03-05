@@ -28,6 +28,8 @@ class PinnedSiteController: UIViewController {
     @IBOutlet weak var homeButton: UIBarButtonItem!
     @IBOutlet weak var switcherButton: UIBarButtonItem!
 
+    weak var downArrow: UIImageView?
+
     weak var tabViewController: TabViewController!
     var pinnedHost: String! {
         didSet {
@@ -63,27 +65,30 @@ class PinnedSiteController: UIViewController {
     }
 
     private func refreshSwitcherMenu() {
+        guard #available(iOS 13, *) else { return }
 
         let imageView = UIImageView()
+        imageView.frame = .init(x: 2, y: 2, width: 28, height: 28)
+        imageView.contentMode = .center
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
-        self.switcherButton.customView = imageView
         imageView.loadFavicon(forDomain: pinnedHost, usingCache: .tabs) { image, _ in
             guard let image = image else { return }
-            imageView.image = self.imageWithImage(image: image, scaledToSize: .init(width: 32, height: 32))
+            imageView.image = image.prepareForSwitcherMenu()
         }
 
-        if #available(iOS 13.0, *) {
-            imageView.addInteraction(UIContextMenuInteraction(delegate: self))
-        }
-    }
+        let downArrow = UIImageView(image: UIImage(systemName: "arrowtriangle.down.square.fill"))
+        downArrow.frame = .init(origin: .init(x: 15, y: 15), size: downArrow.frame.size)
+        downArrow.tintColor = ThemeManager.shared.currentTheme.barTintColor
+        self.downArrow = downArrow
 
-    func imageWithImage(image: UIImage, scaledToSize newSize: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-        image.draw(in: .init(origin: .zero, size: newSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
+        let menuView = UIView()
+        menuView.frame = .init(x: 0, y: 0, width: 32, height: 32)
+        menuView.addSubview(imageView)
+        menuView.addSubview(downArrow)
+        self.switcherButton.customView = menuView
+
+        menuView.addInteraction(UIContextMenuInteraction(delegate: self))
     }
 
     private func setupTabController() {
@@ -151,6 +156,24 @@ extension PinnedSiteController: UIContextMenuInteractionDelegate {
         })
     }
 
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction,
+                                willDisplayMenuFor configuration: UIContextMenuConfiguration,
+                                animator: UIContextMenuInteractionAnimating?) {
+
+        print("***", #function)
+        downArrow?.isHidden = true
+
+    }
+
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction,
+                                willEndFor configuration: UIContextMenuConfiguration,
+                                animator: UIContextMenuInteractionAnimating?) {
+
+        print("***", #function)
+        downArrow?.isHidden = false
+        
+    }
+
 }
 
 extension PinnedSiteController: Themable {
@@ -158,6 +181,20 @@ extension PinnedSiteController: Themable {
     func decorate(with theme: Theme) {
         navigationContainer.backgroundColor = theme.barBackgroundColor
         homeButton.tintColor = theme.barTintColor
+    }
+
+}
+
+@available(iOS 13.0, *)
+extension UIImage {
+
+    func prepareForSwitcherMenu() -> UIImage? {
+        let newSize = CGSize(width: 28, height: 28)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        draw(in: .init(origin: .zero, size: newSize))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
     }
 
 }
