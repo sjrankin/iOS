@@ -75,32 +75,32 @@ class TabSwitcherTransition: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
 }
-
-class TabSwitcherTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
-    
-    func animationController(forPresented presented: UIViewController,
-                             presenting: UIViewController,
-                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let mainVC = presenting as? MainViewController,
-            let tabSwitcherVC = presented as? TabSwitcherViewController else {
-            return nil
-        }
-        
-        if mainVC.homeController != nil {
-            return FromHomeScreenTransition(mainViewController: mainVC,
-                                            tabSwitcherViewController: tabSwitcherVC)
-        }
-        
-        return FromWebViewTransition(mainViewController: mainVC,
-                                     tabSwitcherViewController: tabSwitcherVC)
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        guard let tabSwitcherVC = dismissed as? TabSwitcherViewController else { return nil }
-        
-        if let tab = tabSwitcherVC.tabsModel.currentTab, tab.link == nil {
-            return ToHomeScreenTransition(tabSwitcherViewController: tabSwitcherVC)
-        }
-        return ToWebViewTransition(tabSwitcherViewController: tabSwitcherVC)
-    }
-}
+//
+//class TabSwitcherTransitionDelegate: NSObject, UIViewControllerTransitioningDelegate {
+//    
+//    func animationController(forPresented presented: UIViewController,
+//                             presenting: UIViewController,
+//                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        guard let mainVC = presenting as? MainViewController,
+//            let tabSwitcherVC = presented as? TabSwitcherViewController else {
+//            return nil
+//        }
+//        
+//        if mainVC.homeController != nil {
+//            return FromHomeScreenTransition(mainViewController: mainVC,
+//                                            tabSwitcherViewController: tabSwitcherVC)
+//        }
+//        
+//        return FromWebViewTransition(mainViewController: mainVC,
+//                                     tabSwitcherViewController: tabSwitcherVC)
+//    }
+//
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        guard let tabSwitcherVC = dismissed as? TabSwitcherViewController else { return nil }
+//        
+//        if let tab = tabSwitcherVC.tabsModel.currentTab, tab.link == nil {
+//            return ToHomeScreenTransition(tabSwitcherViewController: tabSwitcherVC)
+//        }
+//        return ToWebViewTransition(tabSwitcherViewController: tabSwitcherVC)
+//    }
+//}

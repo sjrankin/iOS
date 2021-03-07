@@ -130,7 +130,7 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="Tabs"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="p9L-cF-4aL" kind="presentation" identifier="ShowTabs" modalPresentationStyle="overCurrentContext" id="v48-wg-SoN"/>
+                                            <segue destination="p9L-cF-4aL" kind="presentation" identifier="ShowTabs" animates="NO" modalPresentationStyle="overCurrentContext" id="v48-wg-SoN"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>

@@ -99,7 +99,7 @@ class MainViewController: UIViewController {
     
     private var fireButtonAnimator: FireButtonAnimator?
 
-    fileprivate lazy var tabSwitcherTransition = TabSwitcherTransitionDelegate()
+//    fileprivate lazy var tabSwitcherTransition = TabSwitcherTransitionDelegate()
     var currentTab: TabViewController? {
         return tabManager?.current
     }
@@ -313,7 +313,7 @@ class MainViewController: UIViewController {
         }
 
         if let controller = segue.destination as? TabSwitcherViewController {
-            controller.transitioningDelegate = tabSwitcherTransition
+//            controller.transitioningDelegate = tabSwitcherTransition
             controller.delegate = self
             controller.tabsModel = tabManager.model
             controller.previewsSource = previewsSource

@@ -149,7 +149,7 @@ class TabSwitcherViewController: UIViewController {
     
     func prepareForPresentation() {
         view.layoutIfNeeded()
-        self.scrollToInitialTab()
+//        self.scrollToInitialTab()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -159,7 +159,7 @@ class TabSwitcherViewController: UIViewController {
             controller.delegate = self
             return
         }
-        
+
     }
 
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer) {
@@ -185,13 +185,13 @@ class TabSwitcherViewController: UIViewController {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    private func scrollToInitialTab() {
-        guard let index = tabsModel.currentTab == nil ? 0 : tabsModel.indexOf(tab: tabsModel.currentTab!) else { return }
-        guard index < collectionView.numberOfItems(inSection: 0) else { return }
-        let indexPath = IndexPath(row: index, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
-    }
-
+//    private func scrollToInitialTab() {
+//        guard let index = tabsModel.currentTab == nil ? 0 : tabsModel.indexOf(tab: tabsModel.currentTab!) else { return }
+//        guard index < collectionView.numberOfItems(inSection: 0) else { return }
+//        let indexPath = IndexPath(row: index, section: 0)
+//        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+//    }
+//
     private func refreshTitle() {
         titleView.text = UserText.numberOfTabs(tabsModel.count)
     }
@@ -301,7 +301,7 @@ class TabSwitcherViewController: UIViewController {
     }
 
     func dismiss() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: false, completion: nil)
     }
 }
 
